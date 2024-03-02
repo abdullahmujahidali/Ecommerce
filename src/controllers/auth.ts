@@ -1,15 +1,26 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { prismaClient } from "..";
 import { hashSync, compareSync } from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../secrets";
+import { BadRequestsException } from "../exceptions/bad-request";
+import { ErrorCode } from "../exceptions/root";
 
-export const signup = async (req: Request, res: Response) => {
+export const signup = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { email, password, name } = req.body;
 
   let user = await prismaClient.user.findFirst({ where: { email } });
   if (user) {
-    return res.status(400).json({ message: "User already exists" });
+    next(
+      new BadRequestsException(
+        "User already exists",
+        ErrorCode.USER_ALREADY_EXISTS
+      )
+    );
   }
   user = await prismaClient.user.create({
     data: {
@@ -21,22 +32,33 @@ export const signup = async (req: Request, res: Response) => {
   res.json(user);
 };
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { email, password } = req.body;
 
   let user = await prismaClient.user.findFirst({ where: { email } });
   if (!user) {
-    throw Error("User doesn't exists");
+    next(new BadRequestsException("User not found", ErrorCode.USER_NOT_FOUND));
   }
-  if (!compareSync(password, user.password)) {
-    throw Error("Incorrect password");
+  if (user) {
+    if (!compareSync(password, user.password)) {
+      next(
+        new BadRequestsException(
+          "Incorrect password",
+          ErrorCode.INCORRECT_PASSWORD
+        )
+      );
+    }
+    const token = jwt.sign(
+      {
+        id: user.id,
+        email: user.email,
+      },
+      JWT_SECRET
+    );
+    res.json({ user, token });
   }
-  const token = jwt.sign(
-    {
-      id: user.id,
-      email: user.email,
-    },
-    JWT_SECRET
-  );
-  res.json({ user, token });
 };
