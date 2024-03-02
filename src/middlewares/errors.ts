@@ -6,7 +6,6 @@ export const errorMiddleware = (
   res: Response,
   next: NextFunction
 ) => {
-  console.log("error ai ha");
   res.status(error.statusCode).json({
     message: error.message,
     error: error.errorCode,
