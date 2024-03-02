@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/abdullahmujahidali/Ecommerce/issues"
   },
-  "homepage": "https://github.com/abdullahmujahidali/Ecommerce#readme"
+  "homepage": "https://github.com/abdullahmujahidali/Ecommerce#readme",
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
 }
