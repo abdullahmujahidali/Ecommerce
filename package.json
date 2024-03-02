@@ -1,0 +1,26 @@
+{
+  "name": "ecomerce",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abdullahmujahidali/Ecommerce.git"
+  },
+  "keywords": [
+    "react",
+    "node.js",
+    "mysql",
+    "prisma",
+    "ecommerce"
+  ],
+  "author": "abdullahmujahidali",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abdullahmujahidali/Ecommerce/issues"
+  },
+  "homepage": "https://github.com/abdullahmujahidali/Ecommerce#readme"
+}
