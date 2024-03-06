@@ -5,7 +5,6 @@ import * as jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../secrets";
 import { BadRequestsException } from "../exceptions/bad-request";
 import { ErrorCode } from "../exceptions/root";
-import { UnprocessableEntity } from "./validations";
 import { SignUpSchema } from "../schemas/users";
 import { NotFoundException } from "../exceptions/not-found";
 
@@ -60,4 +59,9 @@ export const login = async (
     );
     res.json({ user, token });
   }
+};
+
+export const me = async (req: Request, res: Response) => {
+  console.log("req: ", req);
+  res.json(req);
 };
